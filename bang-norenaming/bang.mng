@@ -1,0 +1,121 @@
+\documentclass{article}
+
+
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{fullpage}
+\usepackage{moreverb}
+\usepackage{color}
+\usepackage{ifthen}
+\usepackage{supertabular}
+\usepackage{stmaryrd}
+\usepackage{cmll}
+
+\begin{document}
+
+\input{preamble}
+
+\title{Translation of F$^{\circ}$ to Bang}
+
+\maketitle
+\section{Definitions}
+\input{bang}
+\ottall
+
+
+Definition of metafunctions:
+\[
+\begin{array}{rcl}
+[[ [ * ] S ]] & = & [[ !S ]] \\
+[[ [ o ] S ]] & = & [[ S ]] \\
+[[ [ * ] t ]] & = & [[ !t ]] \\
+[[ [ o ] t ]] & = & [[ t ]] \\
+\end{array}
+\]
+
+
+\section{Metatheory}
+
+Simple Lemmas:
+\begin{itemize}
+\item If $[[ |- G ]]$ and $[[ x : tau isin G ]]$ then $[[G |- tau :
+  *]]$.
+\item If $[[ G |-  x:tau]]$ then $[[G |- tau : o]]$.
+\item If \ $[[G |- tau : k]]$ and $[[G |- tau : k ==> S]]$ and $[[G ==> Phi]]$ then $[[Phi |- S]]$.
+
+\item If \ $[[|- G]]$ and \ $[[G ==> Phi]]$ then $[[|- Phi]]$.
+
+\item If \ $[[G |- D]]$ and $[[G ==> Phi]]$ and $[[G ; D ==> Psi]]$
+  then $[[Phi |- Psi]]$.
+
+\item If \ $[[G |- tau : * ==> S]]$ then $[[S]]\; =\; [[!S']]$ for
+  some $[[S']]$.
+
+\item If \ $[[G |- tau1 -k->tau2 : o ==> S]]$ then $[[S]]\; = \; [[S1
+-o S2]]$ 
+
+\item If \ $[[G |- all alpha:k. tau : o ==> S]]$ then $[[S]]\; = \;
+[[all alpha.S']]$.
+
+\item If \ $[[|- G]]$ and $[[ x:tau isin G]]$ and $[[G ==> Phi]]$ then
+  $[[ x:S isin Phi]]$ where $[[G |- tau : * ==> !S]]$.
+
+\item If \ $[[G ; D1 ==> Psi1]]$ and $[[G; D2 ==> Psi2]]$ then $[[G;
+  D1 U D2 ==> Psi1 U Psi2]]$.
+
+\item If \ $[[G, alpha : * |- tau : k ==> S]]$ and $[[G |- tau' : *
+  ==> !S']]$ then $[[G |- tau {tau' / alpha} : k ==> S{S'/alpha}]]$.
+
+\item If \ $[[G, alpha : o |- tau : k ==> S]]$ and $[[ G |- tau' : o
+  ==> S']]$ then $[[G |- tau{tau' / alpha} : k ==> S{S'/alpha}]]$.
+\end{itemize}
+
+\begin{theorem}[Translation is type preserving]
+\noindent If
+\begin{itemize}
+\item $[[ G ; D |- exp : tau ]]$
+\item $[[ G |- tau : k ==> S]]$
+\item $[[ [G ; D |- exp : tau] k ==> t ]]$
+\item $[[ G ==> Phi ]]$
+\item $[[ G; D ==> Psi ]]$
+\end{itemize}
+\noindent Then: 
+\begin{itemize}
+\item $[[ Phi; Psi |- t : S]]$
+\end{itemize}
+\end{theorem}
+\begin{proof}
+By induction on the derivation that $[[ G; D |- exp : tau ]]$.
+
+% \begin{itemize}
+
+% \item \textbf{Case UVar}:  By inversion, we have $[[x:tau isin G]]$
+%   and $[[D]] = \cdot$.   Furthermore, it must be the case that $[[k]] = [[*]]$
+%   and we have $[[G |- tau : * ==> !S]]$.  The only translation rule
+%   that applies is TransUVAR, so we know that $t = !x$.  
+
+% \end{itemize}
+
+
+\end{proof}
+
+
+\paragraph{Notes}
+
+This translation is actually a relation --- there are many possible
+target translations for a given term.  The translation is actually
+governed by the typing derivation (including resolution of the
+subkinding and nondeterministic variable binding) found for a source
+program.  The translation is also parameterized by the kind $[[k]]$,
+which is an indicator of how the term being translated will be treated
+by its context---if the context promises to treat the term linearly,
+then the translation can remove $!$'s.
+
+The power of using kinds to help with polymorphism is shown
+by the fact that translating type instantiation takes four forms:
+the type being instantiated can be linear or unrestricted, and the
+term it is being supplied to can be linear or unrestricted. 
+
+\end{document}

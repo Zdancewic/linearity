@@ -1,0 +1,280 @@
+% References
+\newcommand{\Figure}[1]{Figure~\ref{fig:#1}}
+\newcommand{\Section}[1]{Section~\ref{sec:#1}}
+\newcommand{\Lemma}[1]{Lemma~\ref{lem:#1}}
+\newcommand{\Theorem}[1]{Theorem~\ref{thm:#1}}
+\newcommand{\Property}[1]{Property~\ref{prop:#1}}
+\newcommand{\Corollary}[1]{Corollary~\ref{cor:#1}}
+\newcommand{\Conjecture}[1]{Conjecture~\ref{conj:#1}}
+
+% Theorems and Lemmas
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{property}[theorem]{Property}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+% Table formatting
+\newcommand{\ltwo}[1]{\multicolumn{2}{l}{#1}}
+\newcommand{\lthree}[1]{\multicolumn{3}{l}{#1}}
+
+% Math
+\newcommand{\union}{\mathbin{\cup}}
+\newcommand{\inter}{\mathbin{\cap}}
+\newcommand{\mset}[1]{\ensuremath{\{ #1 \}}}
+\newcommand{\munion}{\uplus}
+\newcommand{\minter}{\inter}
+\newcommand{\mdiff}{\ensuremath{-}}
+\newcommand{\eqdef}{\ensuremath{\triangleq}}
+\newcommand{\namedfun}[2]{\ensuremath{\textrm{#1}(#2)}}
+\newcommand{\pfcase}[1]{\emph{Case} #1.}
+
+% Fonts
+\newcommand{\tc}[1]{\textup{\textsf{#1}}}
+\newcommand{\ec}[1]{\textup{\textsf{#1}}}
+\newcommand{\kw}[1]{\textup{\textbf{#1}}}
+\newcommand{\vn}[1]{\textrm{\textit{#1}}}
+\newcommand{\lab}[1]{\textup{\textsf{#1}}}
+\newcommand{\meta}[1]{\textrm{\textit{#1}}}
+
+% General PL
+\newcommand{\app}{\ensuremath{\;}}
+\newcommand{\targ}[1]{[#1]}
+\newcommand{\tapp}[2]{\ensuremath{#1 \app \targ{#2}}}
+\newcommand{\typed}{\ensuremath{\mathord{:}}}
+\newcommand{\hastype}{\ensuremath{\mathrel{:}}}
+\newcommand{\proctype}{\ensuremath{\mathrel{::}}}
+\newcommand{\st}{\ensuremath{. \:}}
+\newcommand{\subto}{\mapsto}
+\newcommand{\subst}[3]{\ensuremath{\{#1 \subto #2\} #3}}
+\newcommand{\msubst}[2]{\ensuremath{\{#1\} #2}}
+\newcommand{\shows}{\ensuremath{\vdash}}
+\newcommand{\noctx}{\ensuremath{\cdot}}
+\newcommand{\cfdrv}{\ensuremath{::=}}
+\newcommand{\cfor}{\ensuremath{\mathrel{\big\vert}}}
+\newcommand{\wf}{\textrm{ w.f.}}
+\newcommand{\ok}{\textrm{ ok}}
+\newcommand{\ctxlt}{\subseteq}
+\newcommand{\multi}[1]{#1\ensuremath{^{*}}}
+\newcommand{\evto}{\mathrel{\, \longrightarrow \,}}
+\newcommand{\mevto}{\mathrel{\, \multi{\longrightarrow} \,}}
+\newcommand{\fv}[1]{\namedfun{fv}{#1}}
+\newcommand{\dom}[1]{\namedfun{dom}{#1}}
+\newcommand{\ircase}[1]{\pfcase{\irn{#1}}}
+\newcommand{\evcl}{\big[}
+\newcommand{\evcr}{\big]}
+\newcommand{\evc}[1]{\evcl #1 \evcr}
+\newcommand{\hole}{\evc{}}
+\newcommand{\letlit}{\kw{let}}
+\newcommand{\inlit}{\app \kw{in} \app}
+\newcommand{\letin}[3]{\letlit \app #1 = #2 \inlit #3}
+\newcommand{\inj}[2]{\ensuremath{\kw{in}_{#1}^{#2}}}
+\newcommand{\case}{\kw{case}}
+\newcommand{\of}{\app \kw{of} \app}
+\newcommand{\patto}{\ensuremath{\mapsto}}
+\newcommand{\pator}{\ensuremath{\app | \app}}
+\newcommand{\caseof}[5]{\case \app #1 \of \inj{1}{} \app #2 \patto #3
+                                   \pator \inj{2}{} \app #4 \patto #5}
+\newcommand{\seal}{\kw{pack}}
+\newcommand{\ascribe}{\hastype}
+\newcommand{\sealin}[4]{\ensuremath{\seal \app #1 = #2 \inlit #3 \ascribe #4}}
+\newcommand{\unseal}{\kw{unpack}}
+\newcommand{\unsealin}[4]{\ensuremath{\unseal \app #1, #2 = #3 \inlit #4}}
+\newcommand{\kto}{\ensuremath{\Rightarrow}}
+\newcommand{\rec}[1]{\ensuremath{\mu #1 \st}}
+%\newcommand{\freshfor}{\ensuremath{\app\#\app}}
+\newcommand{\freshfor}{\ensuremath{\notin}}
+\newcommand{\bindsas}{\ensuremath{\Supset}}
+\newcommand{\fixlit}{\kw{fix}}
+\newcommand{\fix}[2]{\ensuremath{\fixlit \app #1.\app #2}}
+\newcommand{\caseT}[2]{\ensuremath{\case \app #1 \of #2}}
+\newcommand{\branch}[4]{\ensuremath{\ctr{#1}{#2}{#3}.\app #4}}
+\newcommand{\ctr}[3]{\ensuremath{\vn{#1}_{#2}^{\vn{#3}}}}
+\newcommand{\alloc}[1]{\ensuremath{\kw{ref} \app #1}}
+\newcommand{\assign}[2]{\ensuremath{#1 \mathrel{:=} #2}}
+\newcommand{\deref}[1]{\ensuremath{\oc #1}}
+\newcommand{\free}[1]{\ensuremath{\bad{Free} \app #1}}
+\newcommand{\fresh}[1]{\ensuremath{#1^{\dag}}}
+\newcommand{\upd}{\ensuremath{\shortleftarrow}}
+\newcommand{\op}[5]{\ensuremath{#1 \upd #2.#3 \app #4; \app #5}}
+\newcommand{\meanl}{\ensuremath{[ \! [}}
+\newcommand{\meanr}{\ensuremath{] \! ]}}
+\newcommand{\means}[1]{\ensuremath{\meanl #1 \meanr}}
+
+% General ``logic''
+\newcommand{\void}{\tc{Ans}}
+\newcommand{\inv}{\lnot}
+\newcommand{\rinv}
+
+% Linear logic
+\newcommand{\knon}{\ensuremath{\mathord{\star}}}
+\newcommand{\klin}{\ensuremath{\mathord{\circ}}}
+\newcommand{\kans}[1]{\bullet^{#1}}
+\newcommand{\subk}{\leqslant}
+\newcommand{\res}[2]{\ensuremath{{#1}^{#2}}}
+\newcommand{\non}[1]{\res{#1}{\knon}}
+\newcommand{\lin}[1]{\res{#1}{\klin}}
+%\newcommand{\gen}[1]{\widetilde{#1}}
+\newcommand{\gto}[1]{\mathbin{\stackrel{{}_{#1} {}}{\to}}}
+\newcommand{\nto}{\gto{\star}}
+\newcommand{\lto}{\gto{\circ}}
+\newcommand{\glambda}[2]{\ensuremath{\lambda^{#1} #2 \st}}
+\newcommand{\nlambda}[1]{\glambda{\knon}{#1}}
+\newcommand{\llambda}[1]{\glambda{\klin}{#1}}
+\newcommand{\gLambda}[2]{\Lambda #1 \typed #2 \st}
+\newcommand{\nLambda}[1]{\gLambda{#1}{\knon}}
+\newcommand{\lLambda}[1]{\gLambda{#1}{\klin}}
+\newcommand{\aLambda}[2]{\gLambda{#1}{\kans{#2}}}
+\newcommand{\gforall}[2]{\forall #1 \typed #2 \st}
+\newcommand{\nforall}[1]{\gforall{#1}{\knon}}
+\newcommand{\lforall}[1]{\gforall{#1}{\klin}}
+\newcommand{\aforall}[2]{\gforall{#1}{\kans{#2}}}
+\newcommand{\gexist}[2]{\exists #1 \typed #2 \st}
+\newcommand{\nexist}[1]{\gexist{#1}{\knon}}
+\newcommand{\lexist}[1]{\gexist{#1}{\klin}}
+\newcommand{\aexist}[2]{\gexist{#1}{\kans{#2}}}
+\newcommand{\ltb}{(}
+\newcommand{\rtb}{)}
+\newcommand{\tens}[1]{\ensuremath{\ltb #1 \rtb}}
+\newcommand{\lcb}{\langle}
+\newcommand{\rcb}{\rangle}
+\newcommand{\choi}[1]{\ensuremath{\lcb #1 \rcb}}
+\newcommand{\tuple}[1]{\ensuremath{( #1 )}}
+\newcommand{\sel}{.}
+\newcommand{\join}{\ensuremath{\doublecup}}
+\newcommand{\tensor}{\ensuremath{\otimes}}
+%\newcommand{\with}{\ensuremath{\mathbin{\&}}}
+%\newcommand{\parr}{\ensuremath{\mathbin{\#}}}
+\newcommand{\bsum}{\ensuremath{\oplus}}
+\newcommand{\lolto}{\ensuremath{\multimap}}
+\newcommand{\bang}{\ensuremath{\oc}}
+\newcommand{\letbang}{\ensuremath{\letlit \app \bang}}
+\newcommand{\letbangin}[3]{\ensuremath{\letbang #1 = #2 \inlit #3}}
+\newcommand{\whynot}{\ensuremath{\wn}}
+\newcommand{\nbind}[1]{\ensuremath{#1}}
+\newcommand{\trus}[1]{\ensuremath{\lfloor\!\lfloor #1 \rfloor\!\rfloor}}
+%\newcommand{\trthem}[1]{\ensuremath{\lceil\!\lceil #1
+%                                    \rceil\!\rceil}}
+\newcommand{\trthem}[1]{\ensuremath{[ \! [ #1 ] \! ]}}
+
+% Resource semantics
+\newcommand{\elabto}{ \hookrightarrow }
+\newcommand{\revto}[2]{\mathrel{\!\!\!\!\:
+                        \tiny{\begin{array}{r}#1 \\ #2 \end{array}}
+                        \!\!\!\!\!\: \normalsize{\longrightarrow} \,}}
+\newcommand{\mrevto}[2]{\mathrel{\!\!\!\!\:
+                         \tiny{\begin{array}{r}#1 \\ #2 \end{array}}
+                         \!\!\!\!\!\: \normalsize{\multi{\longrightarrow}} \,}}
+\newcommand{\inst}[4]{\ensuremath{\ann{#4}{#2}}}
+\newcommand{\noact}{\ensuremath{\epsilon}}
+\newcommand{\ann}[2]{\ensuremath{(#1 \typed #2)}}
+\newcommand{\newidx}{\namedfun{genidx}{}}
+\newcommand{\cast}[2]{\ensuremath{\nicefrac{#1}{#2}}}
+\newcommand{\content}[1]{\ensuremath{\mathfrak{T}(#1)}}
+\newcommand{\simple}[1]{\ensuremath{\mathfrak{A}(#1)}}
+\newcommand{\intro}[1]{\ensuremath{\mathfrak{i}(#1)}}
+\newcommand{\elim}[1]{\ensuremath{\mathfrak{e}(#1)}}
+\newcommand{\req}{\ensuremath{\simeq}}
+\newcommand{\gdrop}[2]{\ensuremath{#2 \mathord{\setminus} #1}}
+\newcommand{\ndrop}[1]{\gdrop{\knon}{#1}}
+\newcommand{\gres}[2]{\gdrop{\clubsuit}{#2}}
+\newcommand{\lres}[1]{\ndrop{#1}}
+\newcommand{\aneg}[1]{{-#1}}
+\newcommand{\ctrl}{\kw{control}}
+\newcommand{\abort}{\kw{abort}}
+\newcommand{\callcc}{\kw{callcc}}
+
+% Examples
+\newcommand{\tstring}{\tc{String}}
+\newcommand{\tchar}{\tc{Char}}
+\newcommand{\tnat}{\tc{Nat}}
+\newcommand{\tint}{\tc{Int}}
+\newcommand{\tfilehandle}{\tc{FileHandle}}
+\newcommand{\tfh}[1]{\namedfun{\tc{File}}{#1}}
+\newcommand{\trofh}[1]{\namedfun{\tc{ROFile}}{#1}}
+\newcommand{\tunit}{\tc{Unit}}
+\newcommand{\eunit}{\ec{unit}}
+\newcommand{\badfh}{\tc{UnsafeFH}}
+\newcommand{\bad}[1]{\ec{unsafe#1}}
+
+% Communication
+\newcommand{\srcop}[2]{\ensuremath{\mathopen{\upharpoonleft} #2
+		                   \mathclose{\upharpoonright}_{#1}}}
+\newcommand{\snkop}[2]{\ensuremath{\mathopen{\downharpoonleft}#2
+		       \mathclose{\downharpoonright}_{#1}}}
+\newcommand{\commsym}{\mathord{\triangleright}}
+\newcommand{\src}[2]{\ensuremath{#1 \commsym #2}}
+\newcommand{\snk}[2]{\ensuremath{#2 \commsym #1}}
+\newcommand{\capp}{\mathord{\stackrel{\smallfrown}{\phantom{\, . \,}}}}
+\newcommand{\csel}{\mathord{\stackrel{\smallfrown}{\, . \,}}}
+\newcommand{\lcsb}{\mathopen{\lcb \! |}}
+\newcommand{\rcsb}{\mathclose{| \! \rcb}}
+\newcommand{\fsnk}[3]{\ensuremath{\llambda{\_ \typed \snk{#1}{#2}} #3}}
+\newcommand{\asnk}[2]{\ensuremath{\lcsb #2 \rcsb #1}}
+\newcommand{\fsrc}[4]{\ensuremath{(\llambda{#3 \typed #2} #4)
+                        \capp \src{#1}{#2}}}
+\newcommand{\asrc}[2]{\ensuremath{\choi{#2} \csel \src{#1}{}}}
+\newcommand{\tsrc}[1]{\ensuremath{\commsym #1}}
+\newcommand{\yield}{\kw{yield}}
+\newcommand{\yld}[1]{\ensuremath{\yield^{#1}}}
+\newcommand{\yieldapp}[2]{\ensuremath{\tapp{\yield}{#1} \app #2}}
+\newcommand{\call}{\kw{call}}
+\newcommand{\future}{\kw{future}}
+\newcommand{\futin}[3]{\future \app #1 = #2 \inlit #3}
+\newcommand{\new}[2]{\nu {#1}^{#2} \st}
+%\newcommand{\optyp}{\varphi}
+%\newcommand{\notyp}{\_}
+\newcommand{\nullproc}{\ensuremath{\boldsymbol{0}}}
+\newcommand{\plel}{\mathbin{\texttt{|}}}
+\newcommand{\done}{\ensuremath{\varnothing}}
+\newcommand{\rcpt}[2]{\done}
+\newcommand{\carries}{\kw{carries}}
+\newcommand{\carin}[3]{#1 \app \carries \app #2 \inlit #3}
+\newcommand{\spawn}{\kw{spawn}}
+\newcommand{\runbg}{\kw{go}}
+\newcommand{\go}[1]{\ensuremath{\runbg^{#1}}}
+\newcommand{\gpar}[1]{\plel}
+\newcommand{\lpar}{\gpar{\klin}}
+\newcommand{\npar}{\gpar{\knon}}
+\newcommand{\exmid}{\kw{pass}}
+\newcommand{\exmidapp}[1]{\ensuremath{\tapp{\newexmid}{#1}}}
+\newcommand{\answer}{\ensuremath{\simbot}}
+\newcommand{\linot}{\ensuremath{\mathord{{}^{{}_{\thicksim}}}}}
+\newcommand{\swap}{\kw{swap}}
+\newcommand{\swapapp}[3]{\tapp{\tapp{\swap}{#1}}{#2} \app #3}
+\newcommand{\outl}{\out}
+\newcommand{\outr}{\out}
+\newcommand{\out}{\kw{out}}
+\newcommand{\outlapp}[2]{\tapp{\outl}{#1} \app #2}
+\newcommand{\outrapp}[2]{\tapp{\outr}{#1} \app #2}
+\newcommand{\parwith}[3]{\kw{par} \app #1 \app \kw{with} \app #2 \app #3}
+\newcommand{\cons}{\ensuremath{\mathbin{::}}}
+\newcommand{\nil}{\ensuremath{\mathord{[]}}}
+\newcommand{\peq}{\ensuremath{\equiv}}
+\newcommand{\fork}{\kw{mix}}
+\newcommand{\dual}[1]{\ensuremath{\widetilde{#1}}}
+\newcommand{\ktop}{\ensuremath{\bullet}}
+\newcommand{\amb}{\kw{amb}}
+
+% Inference rules
+\newcommand{\irn}[1]{\textsc{#1}}
+\newcommand{\irnb}[1]{[\irn{#1}]}
+\newcommand{\ir}[3]{\irnb{#1} \; \inferrule{#2}{#3}}
+\newcommand{\ax}[2]{\ir{#1}{}{#2}}
+
+% Fancy names
+\newcommand{\lamcalc}{$\lambda$-calculus}
+\newcommand{\lamcalcs}{$\lambda$-calculi}
+\newcommand{\picalc}{$\pi$-calculus}
+\newcommand{\picalcs}{$\pi$-calculi}
+\newcommand{\sysf}{System~F}
+\newcommand{\fomega}{System~$\textnormal{F}^\omega$}
+\newcommand{\fname}{$\textrm{F}^{\klin}$}
+\newcommand{\iname}{intuitionistic~\fname{}}
+\newcommand{\cname}{classical~\fname{}}
+\newcommand{\Iname}{Intuitionistic~\fname{}}
+\newcommand{\Cname}{Classical~\fname{}}
+
+% ``English''
+\newcommand{\etal}{~et~al.}
+\newcommand{\nary}{\hbox{n-ary}}

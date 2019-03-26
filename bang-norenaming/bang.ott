@@ -1,0 +1,456 @@
+% minimal + latex + comments
+metavar termvar, x, y, z ::=   
+  {{ tex \mathit{[[termvar]]} }}
+metavar linvar, a, b, c ::=   
+  {{ tex \mathit{[[linvar]]} }}
+metavar alpha ::=   
+  {{ tex \alpha }}
+
+indexvar index, i, j, n, m ::= {{ coq nat }} 
+
+
+grammar
+k {{ tex \kappa }} :: 'kn_' ::=  {{ com kind: }} 
+  | *              ::   ::  nonlin {{ com Unrestricted }}
+    {{ tex \knon }}
+  | o              ::   ::  lin    {{ com Linear }}
+    {{ tex \klin }}
+tau {{ tex \tau }} :: 'typ_' ::= {{ com type: }}
+  | alpha             ::   ::  fvar   {{ com type variable }}
+  | tau1 - k -> tau2  ::   ::  arrow  {{ com arrow }} 
+      {{ tex [[tau1]]\gto{[[k]]}[[tau2]] }}
+  | all alpha : k . tau ::  ::  all   {{ com all }}
+      {{ tex \forall [[alpha]]\typed[[k]].\;[[tau]] }}
+  | tau { tau' / alpha } ::  M :: subst_tt
+
+exp {{ tex e }} :: 'exp_' ::= {{ com expressions: }}
+  | x              ::   :: fvar  {{ com variable }}
+  | \ k x : tau . exp ::  :: abs   {{ com abstraction }}
+    {{ tex  \glambda{[[k]]}{[[x]]\typed[[tau]]} [[exp]] }}
+  | exp1 exp2      ::   :: app {{ com application }}
+  | /\ alpha : k . exp ::  ::  tabs {{ com type abstaction }}
+    {{ tex \gLambda{[[alpha]]}{[[k]]} [[exp]] }}
+  | exp [ tau ]        ::  ::  tapp {{ com type application }}
+  | ( exp )            :: S :: Paren
+  | exp { exp' / x }   :: M :: subst_ee
+  | exp { tau / alpha } :: M :: subst_te
+
+v :: 'v_' ::=                  {{ com value: }} 
+  | \ k x : tau . exp ::  :: abs   {{ com abstraction }}
+    {{ tex  \glambda{[[k]]}{[[x]]\typed[[tau]]} [[exp]] }}
+  | /\ alpha : k . exp ::  ::  tabs {{ com type abstaction }}
+    {{ tex \gLambda{[[alpha]]}{[[k]]} [[exp]] }}
+
+G {{ tex \Gamma }} :: 'env_' ::=
+  | empty          ::  :: empty
+  | G , x : tau    ::  :: cons
+    {{ tex [[G]], [[x]]\typed[[tau]] }}
+  | G , alpha : k  ::  :: tcons
+    {{ tex [[G]], [[alpha]]\typed[[k]] }}
+
+D {{ tex \Delta }} :: 'lenv_' ::=
+  | empty          ::  :: empty
+  | x : tau        :: M :: singleton
+    {{ tex [[x]]\typed[[tau]] }}
+  | D , x : tau    ::  :: cons
+    {{ tex [[D]], [[x]]\typed[[tau]] }}
+  | D1 U D2        :: M :: join
+
+t :: 't_' ::=                  {{ com term:    }}
+  | x              ::   :: Var     {{ com variable }}
+  | a              ::   :: LVar    {{ com linear variable }}
+  | \ a : S . t    ::   :: Lam     {{ com abstraction  }}
+    {{ tex \lambda [[a]]\!:\![[S]].[[t]]  }}
+  | t t'           ::   :: App     {{ com application     }}
+  | /\ alpha . t    ::   :: TLam    {{ com type abstraction  }}
+    {{ tex \Lambda [[alpha]].[[t]] }}
+  | t [ S ]        ::   :: TApp    {{ com type application     }}
+  | ! t            ::   :: Bang    {{ com bang }}
+  | let ! x = t in t' ::  ::  LetB
+  | ( t )          :: S :: Paren
+  | t { t' / a }   :: M :: LSubst 
+  | t { t' / x }   :: M :: Subst 
+  | t { S / alpha }    :: M :: TSubst
+  | [ k ] t          :: M :: TransK
+     {{ tex \trthem{[[k]]}[[t]] }}
+
+u :: 'u_' ::=                    {{ com value:   }}
+  | \ a : S . t    ::   :: Lam     {{ com abstraction value }}
+  | /\ alpha . t       ::   :: TLam    {{ com type abstraction value }}
+  | ! t            ::   :: Bang
+  | ( u )          :: S :: Paren
+
+
+S {{ tex \sigma }} :: 'S_' ::=                    {{ com types: }}
+  | alpha          ::   :: Var     {{ com type variable }}
+  | S -o S'        ::   :: LArr    {{ com type of function }}
+  | ! S            ::   :: Bang    {{ com type of bang }}
+  | all alpha . S  ::   :: All     {{ com universal type }}
+    {{ tex \forall [[alpha]].[[S]] }}
+  | ( S )              :: S :: Paren
+  | S { S' / alpha }   :: M :: TSubst
+  | [ k ] S          :: M :: TransK
+     {{ tex \trthem{[[k]]}[[S]] }}
+
+Phi {{ tex \Phi }} :: 'Phi_' ::=                   {{ com contexts: }}
+  | empty          ::   :: Empty   {{ com empty context }}
+  | Phi , x : S      ::   :: Var    {{ com term variable binding }}
+    {{ tex [[Phi]],[[x]]\!:\![[S]]  }}
+  | Phi , alpha      ::   :: Tvar    {{ com type variable binding }}
+    {{ tex [[Phi]],[[alpha]] }}
+  | ( Phi )          :: S :: Paren
+  | Phi1 , Phi2        :: M :: Append
+  | Phi { S / alpha }  :: M :: TSubst
+
+Psi {{ tex \Psi }} :: 'Psi_' ::=   {{ com linear contexts: }}
+  | empty           ::   :: Empty {{ com empty linear context }}
+  | Psi , a : S     ::   :: Var   {{ com linear variable type binding }}
+     {{ tex [[Psi]], [[a]]\!:\![[S]] }}
+  | ( Psi )         :: S :: Paren
+  | a : S           :: M :: Singleton
+  | Psi1 U Psi2      :: M :: Append
+
+terminals :: 'terminals_' ::=
+  | \              ::   :: lambda  {{ tex \lambda }}
+  | /\             ::   :: Lambda  {{ tex \Lambda }}
+  | !              ::   :: bang    {{ tex ! }}
+  | empty          ::   :: empty   {{ tex \cdot }}
+  | ->             ::   :: arrow   {{ tex \rightarrow }}
+  | -o             ::   :: lolli   {{ tex \multimap }}
+  | -->            ::   :: red     {{ tex \longrightarrow }}
+  | =>             ::   :: match   {{ tex \Rightarrow }}
+  | ==             ::   :: equal   {{ tex \cong }}
+  | |-             ::   :: proves  {{ tex \vdash }}
+  | Ex             ::   :: exists  {{ tex \exists }}
+  | <              ::   :: lbrace  {{ tex \langle }}
+  | >              ::   :: rbrace  {{ tex \rangle }}
+  | all            ::   :: all     {{ tex \forall }}
+  | U              ::   :: union   {{ tex \join }}
+  | ==>            ::   :: darrow  {{ tex \Longrightarrow }}
+
+formula :: 'formula_' ::=
+  | judgement                        ::   :: judgement
+
+  | x : tau isin G                     ::   :: svarassn
+      {{ tex [[x]]\!:\![[tau]] \in [[G]] }}
+  | alpha : k isin G                     ::   :: styassn
+      {{ tex [[alpha]]\typed[[k]] \in [[G]] }}
+
+  | x : S isin Phi                     ::   :: varassn
+      {{ tex [[x]]\!:\![[S]] \in [[Phi]] }}
+  | alpha isin Phi                     ::   :: tyassn
+      {{ tex [[alpha]] \in [[Phi]] }}
+  | a : S isin Psi                     ::   :: lvarassn
+      {{ tex [[a]]\!:\![[S]] \in [[Psi]] }}
+  | x notin dom Phi                    ::   :: varfresh
+      {{ tex [[x]] \not\in \mathit{dom}([[Phi]]) }}
+  | alpha notin dom Phi                    ::   :: tvarfresh
+      {{ tex [[alpha]] \not\in \mathit{dom}([[Phi]]) }}
+  | a notin dom Phi                    ::   :: lvarfreshphi
+      {{ tex [[a]] \not\in \mathit{dom}([[Phi]]) }}
+  | a notin dom Psi                    ::   :: lvarfreshpsi
+      {{ tex [[a]] \not\in \mathit{dom}([[Psi]]) }}
+  | aof x = a                          ::   :: trans_name
+      {{ tex \hat{[[x]]} = [[a]] }}
+  | forall i isin 1 -- n . formula   :: M :: forall 
+          {{ tex \forall [[i]] \in 1 .. [[n]] . [[formula]] }} 
+
+  | formula /\ formula'              :: M :: and
+          {{ tex [[formula]] \wedge [[formula']] }}
+
+  | formula \/ formula'              :: M :: or
+          {{ tex [[formula]] \vee [[formula']] }}
+
+  | not formula                      :: M :: not
+      {{ tex \neg [[formula]] }}
+  |  ( formula )                     :: M :: brackets
+      {{ tex ([[formula]]\!) }} 
+   
+  | formula1 .... formulan             ::   :: dots
+
+
+subrules
+  u <:: t
+  v <:: exp
+
+
+defns
+
+Jswf :: 'wf_' ::=
+
+    defn
+    |- G           ::   ::  env :: '' {{ com Context well-formed }} by
+
+    defn
+    G |- tau : k   ::   ::  typ :: '' {{ com Type well-formed }} by 
+
+    defn
+    G |- D         ::   ::  lenv :: '' {{ com Linear context well-formed }} by
+
+defns 
+
+Jstyp :: '' ::=
+
+    defn
+    G ; D |- exp : tau  ::  ::  typing :: '' {{ com Term well-typed }} by
+
+
+defns
+
+Jop  :: '' ::=
+
+  defn
+  t -> t'  ::  :: opr :: '' {{ com Evaluation }} by
+
+  t1 -> t1'
+  ---------------- :: E_App1
+  t1 t2 -> t1' t2
+
+  ----------------------------------- :: E_AppAbs
+  (\a :S. t) t' -> t { t' / a } 
+
+  t1 -> t1'
+  -------------------- :: E_TApp
+  t1 [S] -> t1' [S] 
+
+  ------------------------------------- :: E_TAppTAbs
+  (/\ alpha . t) [S] -> t { S / alpha } 
+  
+  
+  t1 -> t1'
+  --------------------------------------- :: E_Let
+  let !x = t1 in t2 -> let !x = t1' in t2
+
+  -------------------------------------- :: E_Bang
+  let !x = !t1 in t2 -> t2 { t1 / x }
+
+defns
+
+Jtype :: '' ::=
+  defn 
+  |- Phi  ::   :: ctx :: '' {{ com Context well-formed }}  by
+
+  -------- :: C_Empty
+  |- empty
+
+  |- Phi   Phi |- S     x notin dom Phi
+  ------------------------------------ :: C_Var
+  |- Phi, x : S
+
+
+  |- Phi    alpha notin dom Phi
+  ----------------------------- :: C_TVar
+  |- Phi , alpha
+  
+  defn 
+  Phi |- S   ::  :: wfbt :: '' {{ com Types well-formed }} {{ tex [[Phi]][[|-]][[S]] }}  by
+
+  |- Phi    alpha  isin Phi 
+  ------------------------- :: K_TVar
+  Phi |- alpha
+
+  Phi |- S1    Phi |- S2 
+  ------------------------- :: K_Arrow
+  Phi |- S1 -o S2
+
+  Phi |- S
+  ---------------- :: K_Bang
+  Phi |- !S
+
+  Phi, alpha |- S
+  -------------------------  :: K_All
+  Phi |- all alpha. S
+
+
+  defn 
+  Phi |- Psi   :: :: lctx :: '' {{ com Linear Context well-formed }} {{ tex [[Phi]][[|-]][[Psi]] }} by
+
+  |- Phi
+  ------------  :: L_empty
+  Phi |- empty 
+
+
+  Phi |- Psi  Phi |- S    a notin dom Psi
+  ---------------------------------------  :: L_LVar
+  Phi |- Psi , a : S
+
+
+  defn 
+  Phi ; Psi |- t : S     ::  :: typ :: '' {{ com Typing }} by
+
+  |- Phi    x : S isin Phi 
+  ------------------------- :: T_Var
+  Phi ; empty |- x : S
+
+  Phi |- a : S 
+  ---------------------------- :: T_LVar
+  Phi ; a : S |- a : S
+
+
+  Phi |- S1    Phi ; Psi, a : S1 |- t2 : S2
+  ------------------------------------------  :: T_Abs
+  Phi ; Psi |- \ a : S1 . t2 : S1 -o S2
+
+	
+  Phi ; Psi1 |- t1 : S11 -o S12   Phi ; Psi2 |- t2 : S11
+  ------------------------------------------------------- :: T_App
+  Phi ;  Psi1 U Psi2  |- t1 t2 : S12
+
+
+  Phi , alpha ; Psi |- t1 : S
+  ---------------------------------------- :: T_TAbs
+  Phi ; Psi |- /\ alpha. t1 : all alpha. S 
+
+
+  Phi ; Psi |- t1 : all alpha . S     Phi |- S1 
+  --------------------------------------------------- :: T_TApp
+  Phi ; Psi |- t1 [ S1 ] : S { S1 / alpha }
+
+
+  Phi ; empty |- t : S
+  ------------------------ :: T_Bang
+  Phi ; empty |- ! t : ! S
+
+
+  Phi ; Psi1 |- t1 : ! S1   Phi, x : S1 ; Psi2 |- t2 : S2
+  -------------------------------------------------------- :: T_Let
+  Phi ; Psi1 U Psi2 |- let !x = t1 in t2 : S2
+
+
+
+defns
+Jtrans :: '' ::= 
+
+  defn
+  G |- tau : k ==> S   :: :: trans_type :: '' {{ com translate types }} by
+
+  alpha : k isin G
+  ----------------------------------  :: tr_tvar
+  G |- alpha : k ==>  [ k ] alpha
+
+  G |- tau1 : k1 ==> S1
+  G |- tau2 : k2 ==> S2
+  ------------------------------------------ :: tr_arr
+  G |- tau1 -k-> tau2 : k ==> [ k ](S1 -o S2)
+
+
+  G, alpha : k1 |- tau : k ==> S
+  -------------------------------------------------- :: tr_all
+  G |- all alpha : k1. tau : k ==>  [ k ](all alpha . S)
+
+
+%  G |- tau : * ==> !S
+%  -------------------------  :: tr_sub
+%  G |- tau : o ==> S
+
+
+
+  defn
+  G ==> Phi    :: :: trans_env :: '' {{ com translate unrestricted contexts }} by
+
+  -------------------  :: tr_empty
+  empty ==> empty 
+
+  G ==> Phi    G |- tau : * ==> !S
+  ---------------------------------  :: tr_cons_v
+  G, x:tau ==> Phi, x:S
+
+  G ==> Phi    
+  ----------------------------------  :: tr_cons_tv
+  G, alpha : k ==> Phi, alpha
+
+  
+  defn
+  G ; D ==> Psi  :: :: trans_lenv :: '' {{ com translate linear contexts }} by
+
+  ----------------------  :: tr_lempty
+  G ; empty ==> empty
+
+
+  G ; D ==> Psi   G |- tau : o ==> S   aof x = a
+  ------------------------------------------------ :: tr_lcons_l
+  G ; D , x:tau ==>  Psi, a : S
+
+ G ; D ==> Psi   G |- tau : * ==> S   aof x = a
+  ------------------------------------------------ :: tr_lcons_u
+  G ; D , x:tau ==>  Psi, a : S
+
+
+  defn
+   G ; D |- exp : tau  ==> t   ::   :: trans_exp :: '' {{ com translate expressions }}
+  {{ tex [[G]];[[D]][[|-]][[exp]]:[[tau]] [[==>]]\  [[t]] }}
+
+
+   by
+
+  x : tau isin G
+  -------------------------------- :: trans_uvar
+  G ; empty |- x : tau  ==> !x
+
+  
+  aof x = a
+  ------------------------------------- :: trans_lvar
+  G ; x : tau |- x : tau  ==> a
+
+  
+  G |- tau1 : * ==> S1
+  G, x:tau1; D |- exp : tau2 ==> t
+  ------------------------------------------------------------------------------------ :: trans_ufun1
+  G ; D |- \ k x : tau1. exp : tau1 -k-> tau2  ==> [k](\a : S1. let !x = a in t)
+
+
+  aof x = a
+  G |- tau1 : k1 ==> S1
+  G ; D, x:tau1 |- exp : tau2 ==> t      
+  ------------------------------------------------------------------------------------ :: trans_ufun2
+  G ; D |- \ k x : tau1. exp : tau1 -k-> tau2  ==> [k](\a : S1. t)
+
+%   aof x = a
+%   G |- tau1 : * ==> S1
+%   G ; D, x:tau1 |- exp : tau2 ==> t      
+%   ------------------------------------------------------------------------------------ :: trans_ufun3
+%   G ; D |- \ k x : tau1. exp : tau1 -k-> tau2  ==> [k](\a : S1. t)
+
+  
+  G ; D1 |- exp1 : tau1 -*->tau2  ==> t1
+  G ; D2 |- exp2 : tau1 ==> t2
+  ---------------------------------------------------------  :: trans_app1
+  G ; D1 U D2 |- exp1 exp2 : tau2 ==>  let !x = t1 in x t2
+
+
+  G |- tau1 : k1
+  G ; D1 |- exp1 : tau1 -o->tau2  ==> t1
+  G ; D2 |- exp2 : tau1 ==> t2
+  ----------------------------------------------------------------  :: trans_app2
+  G ; D1 U D2 |- exp1 exp2 : tau2 ==>  t1 t2
+
+
+  G, alpha:k; D |- exp : tau ==> t
+  ----------------------------------------------------------------------- :: trans_tabs
+  G ; D |- /\alpha:k. exp : all alpha:k. tau ==> [k'](/\ alpha. t)
+
+  
+  G |- tau : *
+  G |- tau' : * ==> !S'
+  G ; D |- exp : all alpha : *. tau ==> t
+  -----------------------------------------------------------------------  :: trans_tappUU
+  G ; D |- exp [tau'] :  tau{tau' / alpha} ==> let !x = t in x [S']
+
+  G |- tau : o
+  G |- tau' : * ==> !S'
+  G ; D |- exp : all alpha : *. tau ==> t
+  -----------------------------------------------------------------------  :: trans_tappLU
+  G ; D |- exp [tau'] :  tau{tau' / alpha} ==> t [S']
+
+  G |- tau : *
+  G |- tau' : k ==> S'
+  G ; D |- exp : all alpha : o. tau ==> t
+  -----------------------------------------------------------------------  :: trans_tappUL
+  G ; D |- exp [tau'] :  tau{tau' / alpha} ==> let !x = t in x [S']
+
+  G |- tau : o
+  G |- tau' : k ==> S'
+  G ; D |- exp : all alpha : o. tau ==> t
+  -----------------------------------------------------------------------  :: trans_tappLL
+  G ; D |- exp [tau'] :  tau{tau' / alpha} ==> t [S']
+

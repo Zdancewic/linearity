@@ -1,0 +1,51 @@
+A {
+  background: transparent;
+  font-weight: bolder;
+  text-decoration: underline;
+}
+
+A:link    { color: rgb(1,31,91); }
+A:visited { color: rgb(1,31,91); }
+A:active  { color: rgb(153,0,0); }
+A:hover   { color: rgb(153,0,0); }
+
+BODY { background: rgb(255,255,255); color: rgb(0,0,0) }
+DIV > CODE, DIV > PRE, LI > CODE { color: rgb(0,0,0); }
+
+.libtitle {
+  text-align: center;
+}
+
+.doc {
+  background: rgb(204,224,255);
+  padding: 10px;
+}
+
+.keyword {
+  color: rgb(255,0,0);
+  font-weight: bolder;
+}
+
+.doc .keyword {
+  color: inherit;
+}
+
+A.idref {
+  text-decoration: none;
+}
+
+/*
+H1.section {
+  background: rgb(1,31,91);
+  color: rgb(255,255,255);
+  padding: 7px;
+  font-size: 225%;
+}
+
+H2.section {
+  background: rgb(255,204,0);
+  color: rgb(0,0,0);
+  padding: 7px;
+  font-size: 150%;
+}
+*/

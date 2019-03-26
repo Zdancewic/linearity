@@ -1,0 +1,17 @@
+../declarative/AdditionalTactics.vo: ../declarative/AdditionalTactics.v
+../declarative/ListFacts.vo: ../declarative/ListFacts.v
+../declarative/FiniteSets.vo: ../declarative/FiniteSets.v ../declarative/ListFacts.vo
+../declarative/FSetDecide.vo: ../declarative/FSetDecide.v
+../declarative/FSetNotin.vo: ../declarative/FSetNotin.v
+../declarative/Atom.vo: ../declarative/Atom.v ../declarative/FiniteSets.vo ../declarative/FSetDecide.vo ../declarative/FSetNotin.vo ../declarative/ListFacts.vo
+../declarative/Environment.vo: ../declarative/Environment.v ../declarative/ListFacts.vo ../declarative/Atom.vo
+../declarative/Metatheory.vo: ../declarative/Metatheory.v ../declarative/AdditionalTactics.vo ../declarative/Atom.vo ../declarative/Environment.vo
+../declarative/LinearF_Definitions.vo: ../declarative/LinearF_Definitions.v ../declarative/Metatheory.vo
+../declarative/LinearF_Infrastructure.vo: ../declarative/LinearF_Infrastructure.v ../declarative/LinearF_Definitions.vo
+../declarative/LinearF_Lemmas.vo: ../declarative/LinearF_Lemmas.v ../declarative/LinearF_Infrastructure.vo
+ALinearF_Definitions.vo: ALinearF_Definitions.v ../declarative/LinearF_Definitions.vo ../declarative/LinearF_Infrastructure.vo
+ALinearF_Infrastructure.vo: ALinearF_Infrastructure.v ALinearF_Definitions.vo
+ALinearF_Lemmas.vo: ALinearF_Lemmas.v ../declarative/LinearF_Lemmas.vo ALinearF_Infrastructure.vo
+ALinearF_Soundness.vo: ALinearF_Soundness.v ALinearF_Lemmas.vo
+ALinearF_NLemmas.vo: ALinearF_NLemmas.v ALinearF_Lemmas.vo
+ALinearF_NSoundness.vo: ALinearF_NSoundness.v ALinearF_Soundness.vo ALinearF_NLemmas.vo
